@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purpose of Life - Team 3</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Using unpkg CDNs -->
+  <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.22.9/babel.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&family=Philosopher&display=swap" rel="stylesheet">
+  <!-- Inline CSS -->
+  <style>
+    html, body {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .krishna-image {
+      display: block;
+      width: 400px;
+      height: auto;
+      margin: 0 auto;
+      user-drag: none;
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      pointer-events: none;
+    }
+    .hanging-pot {
+      position: absolute;
+      width: 240px;
+      height: auto;
+      user-drag: none;
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .hanging-pot.top-left {
+      top: -20px;
+      left: -20px;
+    }
+    .hanging-pot.top-right {
+      top: -20px;
+      right: -20px;
+    }
+    .normal-pot {
+      position: absolute;
+      width: 240px;
+      height: auto;
+      user-drag: none;
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .normal-pot.bottom-left {
+      bottom: -20px;
+      left: -20px;
+    }
+    .normal-pot.bottom-right {
+      bottom: -20px;
+      right: -20px;
+    }
+    .see-reviews-btn {
+      display: block;
+      margin: 5px auto;
+      padding: 8px 16px;
+      background: linear-gradient(145deg, #4682B4, #2E5A87); /* Gradient for depth */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Philosopher', sans-serif;
+      font-size: 14px;
+      touch-action: manipulation;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+    .see-reviews-btn:hover {
+      background: linear-gradient(145deg, #5A9BD4, #3E6E9A);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    .see-reviews-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .reviews-section {
+      margin-top: 0;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      background: transparent;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 700px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    .form-section {
+      padding: 10px;
+      margin-bottom: 10px;
+      background: linear-gradient(145deg, #2c2c2c, #1f1f1f); /* Subtle gradient */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Deeper shadow */
+      border-radius: 8px;
+      transition: transform 0.2s;
+    }
+    .form-section:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+    h1 {
+      font-size: 2.5em;
+      margin: 10px 0;
+      letter-spacing: 1px; /* Improved typography */
+    }
+    h2 {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+    .form-group {
+      gap: 10px;
+    }
+    .input,
+    .textarea {
+      padding: 8px;
+      font-size: 0.9em;
+      touch-action: manipulation;
+      border: 1px solid #555; /* Slightly lighter border */
+      background: #3a3a3a;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input:focus,
+    .textarea:focus {
+      border-color: #f5c518;
+      box-shadow: 0 0 8px rgba(245, 197, 24, 0.4); /* Enhanced focus effect */
+    }
+    .textarea {
+      min-height: 80px;
+    }
+    .submit-btn {
+      padding: 8px;
+      font-size: 0.9em;
+      touch-action: manipulation;
+      background: linear-gradient(145deg, #f5c518, #d4a017);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.1s, box-shadow 0.2s;
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    .submit-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .reviews-list {
+      gap: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .review-card {
+      padding: 10px;
+      background: linear-gradient(145deg, #2c2c2c, #1f1f1f);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .review-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    }
+    .review-username {
+      margin-bottom: 5px;
+      color: #f5c518;
+      font-size: 0.95em; /* Slightly smaller, less emphasis */
+      letter-spacing: 0.3px;
+    }
+    /* Mobile-specific adjustments */
+    @media (max-width: 600px) {
+      .krishna-image {
+        width: 300px;
+      }
+      .hanging-pot, .normal-pot {
+        width: 160px;
+      }
+      .hanging-pot.top-left {
+        top: -15px;
+        left: -15px;
+      }
+      .hanging-pot.top-right {
+        top: -15px;
+        right: -15px;
+      }
+      .normal-pot.bottom-left {
+        bottom: -15px;
+        left: -15px;
+      }
+      .normal-pot.bottom-right {
+        bottom: -15px;
+        right: -15px;
+      }
+      .container {
+        max-width: 90%;
+      }
+      h1 {
+        font-size: 2em;
+      }
+      h2 {
+        font-size: 1.1em;
+      }
+      .input, .textarea, .submit-btn, .see-reviews-btn {
+        font-size: 0.85em;
+      }
+      .form-section, .reviews-section {
+        padding: 5px;
+      }
+      .reviews-list {
+        max-height: 150px;
+      }
+    }
+    /* Extra small devices (e.g., iPhone SE, 320px wide) */
+    @media (max-width: 375px) {
+      .krishna-image {
+        width: 250px;
+      }
+      .hanging-pot, .normal-pot {
+        width: 120px;
+      }
+      .hanging-pot.top-left {
+        top: -10px;
+        left: -10px;
+      }
+      .hanging-pot.top-right {
+        top: -10px;
+        right: -10px;
+      }
+      .normal-pot.bottom-left {
+        bottom: -10px;
+        left: -10px;
+      }
+      .normal-pot.bottom-right {
+        bottom: -10px;
+        right: -10px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+      h2 {
+        font-size: 1em;
+      }
+      .input, .textarea, .submit-btn, .see-reviews-btn {
+        font-size: 0.8em;
+      }
+      .reviews-list {
+        max-height: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <!-- Add hanging pots in top corners -->
+  <img src="p2.png" alt="Hanging pot top left" class="hanging-pot top-left" draggable="false" oncontextmenu="return false;" />
+  <img src="p2.png" alt="Hanging pot top right" class="hanging-pot top-right" draggable="false" oncontextmenu="return false;" />
+  <!-- Add normal pots in bottom corners -->
+  <img src="p1.png" alt="Normal pot bottom left" class="normal-pot bottom-left" draggable="false" oncontextmenu="return false;" />
+  <img src="p1.png" alt="Normal pot bottom right" class="normal-pot bottom-right" draggable="false" oncontextmenu="return false;" />
+  <script type="text/babel">
+    // Log to confirm scripts loaded
+    if (typeof React === 'undefined') {
+      console.error('React failed to load. Check CDN URL: https://unpkg.com/react@18.2.0/umd/react.production.min.js');
+      document.getElementById('root').innerHTML = '<div class="container"><h1>Error</h1><p>React failed to load. Please check the console and ensure the CDN scripts are accessible.</p></div>';
+    } else if (typeof ReactDOM === 'undefined') {
+      console.error('ReactDOM failed to load. Check CDN URL: https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js');
+      document.getElementById('root').innerHTML = '<div class="container"><h1>Error</h1><p>ReactDOM failed to load. Please check the console and ensure the CDN scripts are accessible.</p></div>';
+    } else if (typeof Babel === 'undefined') {
+      console.error('Babel failed to load. Check CDN URL: https://unpkg.com/@babel/standalone@7.22.9/babel.min.js');
+      document.getElementById('root').innerHTML = '<div class="container"><h1>Error</h1><p>Babel failed to load. Please check the console and ensure the CDN scripts are accessible.</p></div>';
+    } else {
+      console.log('All CDN scripts loaded successfully: React, ReactDOM, Babel.');
+    }
+
+    const { useState, useEffect, Component } = React;
+
+    // Error Boundary Component to catch rendering errors
+    class ErrorBoundary extends Component {
+      state = { hasError: false, errorMessage: '' };
+
+      static getDerivedStateFromError(error) {
+        return { hasError: true, errorMessage: error.message };
+      }
+
+      render() {
+        if (this.state.hasError) {
+          return (
+            <div className="container">
+              <h1>Error in Feedback App</h1>
+              <p>Something went wrong: {this.state.errorMessage}</p>
+              <p>Please check the console for details and ensure all scripts loaded correctly.</p>
+            </div>
+          );
+        }
+        return this.props.children;
+      }
+    }
+
+    // Back4App configuration
+    const BACK4APP_BASE_URL = 'https://parseapi.back4app.com/classes/Review';
+    const BACK4APP_APPLICATION_ID = 'xHzlhGDAokVwkkmTs8kQZ4hYnUpVSB27GBlIL7rU';
+    const BACK4APP_REST_API_KEY = 'jdaPKG9qFUysFuoCNkxt9F15zX9eFbhR9HLPDw75';
+    const HEADERS = {
+      'X-Parse-Application-Id': BACK4APP_APPLICATION_ID,
+      'X-Parse-REST-API-Key': BACK4APP_REST_API_KEY,
+      'Content-Type': 'application/json'
+    };
+
+    const FeedbackApp = () => {
+      const [name, setName] = useState('');
+      const [review, setReview] = useState('');
+      const [reviews, setReviews] = useState([]);
+      const [error, setError] = useState('');
+      const [loading, setLoading] = useState(true);
+      const [showReviews, setShowReviews] = useState(false);
+
+      // Fetch reviews from Back4App
+      useEffect(() => {
+        const fetchReviews = async () => {
+          try {
+            console.log('Fetching reviews from Back4App...');
+            const response = await fetch(`${BACK4APP_BASE_URL}?order=-timestamp`, {
+              method: 'GET',
+              headers: HEADERS
+            });
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(`Failed to fetch reviews: ${response.status} ${response.statusText} - ${errorText}`);
+            }
+            const data = await response.json();
+            console.log('Back4App fetch response:', data);
+            const fetchedReviews = (data.results || []).map(item => ({
+              id: item.objectId,
+              name: item.name,
+              review: item.review,
+              timestamp: item.timestamp
+            }));
+            setReviews(fetchedReviews);
+            setLoading(false);
+          } catch (err) {
+            console.error('Error fetching reviews:', err);
+            setError('Failed to load reviews. Please check Back4App setup (class name, permissions). Error: ' + err.message);
+            setLoading(false);
+          }
+        };
+        fetchReviews();
+      }, []);
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!name.trim() || !review.trim()) {
+          setError('Please enter both your name and review.');
+          return;
+        }
+        const newReview = {
+          name: name.trim(),
+          review: review.trim(),
+          timestamp: new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+        };
+        try {
+          console.log('Submitting review to Back4App:', newReview);
+          const response = await fetch(BACK4APP_BASE_URL, {
+            method: 'POST',
+            headers: HEADERS,
+            body: JSON.stringify(newReview)
+          });
+          if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to submit review: ${response.status} ${response.statusText} - ${errorText}`);
+          }
+          const data = await response.json();
+          console.log('Back4App submit response:', data);
+          setReviews([{ id: data.objectId, ...newReview }, ...reviews]);
+          setName('');
+          setReview('');
+          setError('');
+        } catch (err) {
+          console.error('Error submitting review:', err);
+          setError('Failed to submit review. Please check Back4App permissions and class name. Error: ' + err.message);
+        }
+      };
+
+      const toggleReviews = () => {
+        setShowReviews(!showReviews);
+      };
+
+      if (!document.getElementById('root')) {
+        console.error('Root element not found. Ensure <div id="root"></div> exists in the HTML.');
+        return null;
+      }
+
+      return (
+        <div className="container">
+          {/* Krishna playing flute on clouds */}
+          <img 
+            src="krishna-clouds.png" 
+            alt="Krishna playing flute on clouds" 
+            className="krishna-image"
+            draggable="false"
+            onContextMenu={(e) => e.preventDefault()}
+          />
+          <h1>Purpose of Life - Team 3</h1>
+          
+          {/* Toggle between Form and Reviews */}
+          {!showReviews ? (
+            <div className="form-section">
+              <h2>Submit Your Feedback</h2>
+              {error && <p className="error">{error}</p>}
+              <div className="form-group">
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="input"
+                />
+                <textarea
+                  placeholder="Your Review"
+                  value={review}
+                  onChange={(e) => setReview(e.target.value)}
+                  className="textarea"
+                  rows="4"
+                ></textarea>
+                <button
+                  onClick={handleSubmit}
+                  className="submit-btn"
+                  disabled={loading}
+                >
+                  Submit Feedback
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="reviews-section">
+              <h2>All Reviews</h2>
+              {loading ? (
+                <p className="message">Loading reviews...</p>
+              ) : reviews.length === 0 ? (
+                <p className="message">No reviews yet. Be the first to share!</p>
+              ) : (
+                <div className="reviews-list">
+                  {reviews.map((rev) => (
+                    <div key={rev.id} className="review-card">
+                      <p className="review-username">{rev.name}</p>
+                      <p className="review-text">{rev.review}</p>
+                      <p className="review-timestamp">{rev.timestamp}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* See Reviews / Back to Form Button */}
+          <button 
+            onClick={toggleReviews} 
+            className="see-reviews-btn"
+          >
+            {showReviews ? 'Back to Form' : 'See Reviews'}
+          </button>
+        </div>
+      );
+    };
+
+    // Render with Error Boundary
+    try {
+      ReactDOM.render(
+        <ErrorBoundary>
+          <FeedbackApp />
+        </ErrorBoundary>,
+        document.getElementById('root')
+      );
+      console.log('React app rendered successfully.');
+    } catch (err) {
+      console.error('Failed to render React app:', err);
+      document.getElementById('root').innerHTML = '<div class="container"><h1>Error</h1><p>Failed to render the app. Please check the console for details.</p></div>';
+    }
+  </script>
+</body>
+</html>

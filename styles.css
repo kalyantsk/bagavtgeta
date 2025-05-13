@@ -1,0 +1,243 @@
+/* Dark Background */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Philosopher', sans-serif;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Remove pseudo-elements since we're using <img> tags */
+body::before,
+body::after,
+.container::before,
+.container::after {
+  display: none;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+h1 {
+  font-family: 'Tangerine', cursive;
+  font-size: 2.5em;
+  color: #f5c518;
+  text-align: center;
+  margin: 10px 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px; /* Improved typography */
+}
+
+.form-section {
+  background: linear-gradient(145deg, #2c2c2c, #1f1f1f);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  margin-bottom: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.form-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  font-size: 1.3em;
+  color: #f5c518;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.error {
+  color: #ff4d4d;
+  font-size: 0.8em;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  font-size: 0.9em;
+  box-sizing: border-box;
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  touch-action: manipulation;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #f5c518;
+  box-shadow: 0 0 8px rgba(245, 197, 24, 0.4);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #888;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.submit-btn {
+  background: linear-gradient(145deg, #f5c518, #d4a017);
+  color: #1a1a1a;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.2s;
+  touch-action: manipulation;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.submit-btn:disabled {
+  background: #666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.reviews-section {
+  margin-top: 0;
+}
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.message {
+  color: #888;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.review-card {
+  background: linear-gradient(145deg, #2c2c2c, #1f1f1f);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+.review-username {
+  margin-bottom: 5px;
+  color: #f5c518;
+  font-size: 0.95em; /* Slightly smaller, less emphasis */
+  letter-spacing: 0.3px;
+}
+
+.review-text {
+  color: #e0e0e0;
+  margin-bottom: 5px;
+}
+
+.review-timestamp {
+  color: #888;
+  font-size: 0.8em;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+    max-width: 90%;
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.1em;
+  }
+
+  .submit-btn {
+    font-size: 0.85em;
+    padding: 6px;
+  }
+
+  .form-section, .reviews-section {
+    padding: 5px;
+  }
+
+  .reviews-list {
+    max-height: 150px;
+  }
+}
+
+/* Extra small devices (e.g., iPhone SE, 320px wide) */
+@media (max-width: 375px) {
+  h1 {
+    font-size: 1.8em;
+  }
+
+  h2 {
+    font-size: 1em;
+  }
+
+  .submit-btn {
+    font-size: 0.8em;
+    padding: 6px;
+  }
+
+  .form-section, .reviews-section {
+    padding: 5px;
+  }
+
+  .reviews-list {
+    max-height: 120px;
+  }
+}
